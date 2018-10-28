@@ -5,6 +5,12 @@ free(): void;
 
  tick(): void;
 
+ width(): number;
+
+ height(): number;
+
+ cells(): number;
+
 static  new(): Universe;
 
  render(): string;

@@ -107,6 +107,25 @@ impl Universe {
     // ...
 }
 
+
+/// Public methods, exported to JavaScript.
+#[wasm_bindgen]
+impl Universe {
+    // ...
+
+    pub fn width(&self) -> u32 {
+        self.width
+    }
+
+    pub fn height(&self) -> u32 {
+        self.height
+    }
+
+    pub fn cells(&self) -> *const Cell {
+        self.cells.as_ptr()
+    }
+}
+
 /** The state of the universe is represented as a vector of cells. This
  * is a basic text render to make this human readable
  */
@@ -138,6 +157,7 @@ impl Universe {
         let width = 64;
         let height = 64;
 
+        // hard-coding the universe
         let cells = (0..width * height)
             .map(|i| {
                 if i % 2 == 0 || i % 7 == 0 {
