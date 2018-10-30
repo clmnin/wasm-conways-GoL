@@ -18,6 +18,21 @@ cfg_if! {
 }
 
 /************************** */
+/**       Logging           */
+/************************** */
+
+#[wasm_bindgen]
+extern {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(msg: &str);
+}
+
+// A macro to provide `println!(..)`-style syntax for `console.log` logging.
+macro_rules! log {
+    ($($t:tt)*) => (log(&format!($($t)*)))
+}
+
+/************************** */
 /** Universe implementation */
 /************************** */
 #[wasm_bindgen]
@@ -80,6 +95,11 @@ impl Universe {
                 let cell = self.cells[idx];
                 let live_neighbors = self.live_neighbor_count(row, col);
 
+                log!(
+                    "cell[{}, {}] is initially {:?} and has {} live neighbors",
+                    row, col, cell, live_neighbors
+                );
+
                 let next_cell = match (cell, live_neighbors) {
                     // Rule 1: Any live cell with fewer than two live neighbours
                     // dies, as if caused by underpopulation.
@@ -96,6 +116,8 @@ impl Universe {
                     // All other cells remain in the same state.
                     (otherwise, _) => otherwise,
                 };
+
+                log!("    it becomes {:?}", next_cell);
 
                 next[idx] = next_cell;
             }
@@ -146,7 +168,7 @@ impl fmt::Display for Universe {
 
 
 /************************** */
-/** Universe Constructor */
+/** Universe Constructor    */
 /************************** */
 /// Public methods, exported to JavaScript.
 #[wasm_bindgen]
@@ -154,6 +176,8 @@ impl Universe {
     // ...
 
     pub fn new() -> Universe {
+        // console_error_panic_hook, to log unexpected panics, like a runtime error
+        utils::set_panic_hook();
         let width = 64;
         let height = 64;
 
