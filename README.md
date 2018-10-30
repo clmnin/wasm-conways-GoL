@@ -3,7 +3,9 @@
 Implementing Conway's Game of Life. The backend build in Rust and using
  WebAssembly to render it on a webpage.
 
- ToDo: Need to add this into my website.
+ For a demo click [here](http://clmno.com/wasm-conways-GoL/):
+
+
 
 # Development
  Developed using 🦀🕸️ `wasm-pack-template`. It comes battries included `wasm-bindgen` , `console_error_panic_hook` , `wee_alloc` (which is an insanly cool way to allocate memory, like memalloc but for reimplemented for wasm)
