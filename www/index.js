@@ -18,14 +18,23 @@ canvas.height = (CELL_SIZE + 1) * height + 1;
 canvas.width = (CELL_SIZE + 1) * width + 1;
 
 const ctx = canvas.getContext('2d');
+let animationId = null;
 
+// This function is the same as before, except the
+// result of `requestAnimationFrame` is assigned to
+// `animationId`.
 const renderLoop = () => {
   universe.tick();
 
   drawGrid();
   drawCells();
 
-  requestAnimationFrame(renderLoop);
+  animationId = requestAnimationFrame(renderLoop);
+};
+
+// check if the game/frame is paused
+const isPaused = () => {
+    return animationId === null;
 };
 
 // grid between cells, equally spaced horizontal and vertical lines
@@ -83,6 +92,27 @@ const drawCells = () => {
     ctx.stroke();
 };
 
+// get the current state of the button
+const playPauseButton = document.getElementById("play-pause");
 
-// Make initial call for the first iteration
-requestAnimationFrame(renderLoop);
+const play = () => {
+  playPauseButton.textContent = "⏸";
+  renderLoop();
+};
+
+const pause = () => {
+  playPauseButton.textContent = "▶";
+  cancelAnimationFrame(animationId);
+  animationId = null;
+};
+
+playPauseButton.addEventListener("click", event => {
+  if (isPaused()) {
+    play();
+  } else {
+    pause();
+  }
+});
+
+// This used to be `requestAnimationFrame(renderLoop)`.
+play();

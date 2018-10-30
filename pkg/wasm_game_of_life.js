@@ -1,10 +1,7 @@
 /* tslint:disable */
 import * as wasm from './wasm_game_of_life_bg';
 
-/**
-* Universe implementation
-*/
-export const Cell = Object.freeze({ Dead:0,Alive:1, });
+const __wbg_log_55d0b01f9e295146_target = console.log;
 
 let cachedTextDecoder = new TextDecoder('utf-8');
 
@@ -20,6 +17,15 @@ function getStringFromWasm(ptr, len) {
     return cachedTextDecoder.decode(getUint8Memory().subarray(ptr, ptr + len));
 }
 
+export function __wbg_log_55d0b01f9e295146(arg0, arg1) {
+    let varg0 = getStringFromWasm(arg0, arg1);
+    __wbg_log_55d0b01f9e295146_target(varg0);
+}
+/**
+* Universe implementation
+*/
+export const Cell = Object.freeze({ Dead:0,Alive:1, });
+
 let cachedGlobalArgumentPtr = null;
 function globalArgumentPtr() {
     if (cachedGlobalArgumentPtr === null) {
@@ -34,6 +40,17 @@ function getUint32Memory() {
         cachegetUint32Memory = new Uint32Array(wasm.memory.buffer);
     }
     return cachegetUint32Memory;
+}
+
+const __wbg_error_cc95a3d302735ca3_target = console.error;
+
+export function __wbg_error_cc95a3d302735ca3(arg0, arg1) {
+    let varg0 = getStringFromWasm(arg0, arg1);
+
+    varg0 = varg0.slice();
+    wasm.__wbindgen_free(arg0, arg1 * 1);
+
+    __wbg_error_cc95a3d302735ca3_target(varg0);
 }
 
 function freeUniverse(ptr) {
