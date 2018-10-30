@@ -34,3 +34,5 @@ wasm-bindgen-test = "0.2"
 opt-level = "s"
 # Enable debugging
 debug = true
+# LLVM super powers, faster runtime, smaller .wasm
+lto = true
