@@ -43,6 +43,16 @@ pub enum Cell {
     Alive = 1,
 }
 
+/** Toggle set state */
+impl Cell {
+    fn toggle(&mut self) {
+        *self = match *self {
+            Cell::Dead => Cell::Alive,
+            Cell::Alive => Cell::Dead,
+        };
+    }
+}
+
 /** The universe has a width and a height, and a vector 
   of cells of length width * height */
 #[wasm_bindgen]
@@ -145,6 +155,18 @@ impl Universe {
 
     pub fn cells(&self) -> *const Cell {
         self.cells.as_ptr()
+    }
+}
+
+/// Public methods, exported to JavaScript.
+/// To be called from JS to toggle the cell state on event
+#[wasm_bindgen]
+impl Universe {
+    // ...
+
+    pub fn toggle_cell(&mut self, row: u32, column: u32) {
+        let idx = self.get_index(row, column);
+        self.cells[idx].toggle();
     }
 }
 

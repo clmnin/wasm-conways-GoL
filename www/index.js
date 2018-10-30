@@ -20,9 +20,6 @@ canvas.width = (CELL_SIZE + 1) * width + 1;
 const ctx = canvas.getContext('2d');
 let animationId = null;
 
-// This function is the same as before, except the
-// result of `requestAnimationFrame` is assigned to
-// `animationId`.
 const renderLoop = () => {
   universe.tick();
 
@@ -32,11 +29,9 @@ const renderLoop = () => {
   animationId = requestAnimationFrame(renderLoop);
 };
 
-// check if the game/frame is paused
-const isPaused = () => {
-    return animationId === null;
-};
-
+/***************** */
+/**     GFX        */
+/***************** */
 // grid between cells, equally spaced horizontal and vertical lines
 const drawGrid = () => {
     ctx.beginPath();
@@ -92,6 +87,14 @@ const drawCells = () => {
     ctx.stroke();
 };
 
+/***************** */
+/** Control events */
+/***************** */
+// check if the game/frame is paused
+const isPaused = () => {
+    return animationId === null;
+};
+
 // get the current state of the button
 const playPauseButton = document.getElementById("play-pause");
 
@@ -113,6 +116,25 @@ playPauseButton.addEventListener("click", event => {
     pause();
   }
 });
+
+/** Listen for a click event within the canvas*/
+canvas.addEventListener("click", event => {
+    const boundingRect = canvas.getBoundingClientRect();
+  
+    const scaleX = canvas.width / boundingRect.width;
+    const scaleY = canvas.height / boundingRect.height;
+  
+    const canvasLeft = (event.clientX - boundingRect.left) * scaleX;
+    const canvasTop = (event.clientY - boundingRect.top) * scaleY;
+  
+    const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
+    const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
+  
+    universe.toggle_cell(row, col);
+  
+    drawGrid();
+    drawCells();
+  });
 
 // This used to be `requestAnimationFrame(renderLoop)`.
 play();

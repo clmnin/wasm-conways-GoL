@@ -100,6 +100,14 @@ export class Universe {
         return wasm.universe_cells(this.ptr);
     }
     /**
+    * @param {number} arg0
+    * @param {number} arg1
+    * @returns {void}
+    */
+    toggle_cell(arg0, arg1) {
+        return wasm.universe_toggle_cell(this.ptr, arg0, arg1);
+    }
+    /**
     * @returns {Universe}
     */
     static new() {

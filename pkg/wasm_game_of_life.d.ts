@@ -11,6 +11,8 @@ free(): void;
 
  cells(): number;
 
+ toggle_cell(arg0: number, arg1: number): void;
+
 static  new(): Universe;
 
  render(): string;
